@@ -1,6 +1,6 @@
 # Detecting Hallucinations in LLMs Using Internal Activations and Knowledge-Grounded Reasoning
 
-A layered hallucination detection and correction framework for open-source LLMs, combining **LoRA fine-tuning**, **Self-Consistency decoding**, and a **zero-shot Generator-Checker (G-C)** framework — evaluated on the [HaluEval](https://arxiv.org/abs/2305.11747) benchmark across QA, dialogue, and summarization tasks.
+A layered hallucination detection and correction framework for open-source LLMs, combining **LoRA fine-tuning**, **Self-Consistency decoding**, and a **zero-shot Generator-Checker (G-C)** framework — evaluated on the HaluEval benchmark across QA, dialogue, and summarization tasks.
 
 > **Models:** Qwen2.5-3B-Instruct · Gemma-3-4B-IT  
 > **Benchmark:** [HaluEval](https://arxiv.org/abs/2305.11747)  (QA, Dialogue, Summarization)  
@@ -40,7 +40,7 @@ A layered hallucination detection and correction framework for open-source LLMs,
 
 Large Language Models (LLMs) frequently produce fluent but factually incorrect outputs — a phenomenon known as *hallucination*. This project investigates a layered mitigation pipeline:
 
-1. **LoRA Fine-Tuning** — Parameter-efficient fine-tuning on TruthfulQA (rank 16, ~0.12–0.20% of parameters) to promote factually grounded outputs.
+1. **LoRA Fine-Tuning** — Parameter-efficient fine-tuning on TruthfulQA to promote factually grounded outputs.
 2. **Self-Consistency (SC)** — Generates 3 candidate outputs per sample and aggregates via majority voting, with lexical and semantic divergence tracking to flag uncertain predictions.
 3. **Generator-Checker Framework** — A zero-shot closed-loop setup where one model generates a response and a second model independently verifies and provides corrective feedback, allowing one round of refinement.
 
@@ -107,8 +107,10 @@ Large Language Models (LLMs) frequently produce fluent but factually incorrect o
 ### Prerequisites
 
 - Python 3.11+
-- CUDA-compatible GPU (recommended: ≥16GB VRAM for fine-tuning)
+- CUDA-compatible GPU (recommended: ≥32GB VRAM for fine-tuning)
 - Jupyter Notebook or JupyterLab
+
+> **Note:** This project was developed and tested on [Google Colab](https://colab.research.google.com/) using an **H100 GPU**. We recommend running the notebooks in the same environment for best compatibility and performance.
 
 ### Installation
 
@@ -141,7 +143,7 @@ The training and evaluation data are pre-processed and available under `data/`. 
 
 ### 2. LoRA Fine-Tuning
 
-Run the fine-tuning notebooks for each model independently. Pre-trained LoRA adapter weights are already saved under `train/<model>/model_files/` if you wish to skip this step.
+Run the fine-tuning notebooks for each model independently. Pre-trained LoRA adapter weights are already saved under `train/{gemma,qwen}/model_files/` if you wish to skip this step.
 
 **Fine-tune Gemma:**
 ```
@@ -169,7 +171,7 @@ This notebook:
 - Constructs task-specific prompts using the instruction files
 - Runs greedy decoding
 - Parses "Yes"/"No" judgments
-- Outputs per-task accuracy and F1 scores
+- Outputs per-task metrics (accuracy, precision, recall, f1 score)
 - Saves results to `test_results/{gemma,qwen}/`
 - Aggregates all results to `test_results/results_benchmark_lora_selfconsistency.xlsx`
 
