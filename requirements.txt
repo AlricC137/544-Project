@@ -1,0 +1,15 @@
+numpy
+pandas
+openpyxl 
+datasets
+torch 
+torchinfo 
+huggingface-hub 
+trl
+evaluate
+transformers 
+peft 
+accelerate 
+tqdm 
+bitsandbytes
+sentence-transformers
